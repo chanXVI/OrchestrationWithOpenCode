@@ -5,6 +5,8 @@ from openai import AsyncOpenAI
 from pydantic_ai import Agent
 from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.openai import OpenAIProvider
+from pydantic_ai_harness import Advisor, Coder
+from pydantic_ai.providers import infer_provider_class
 
 
 def main():
@@ -17,16 +19,21 @@ def main():
         },
     )
 
-    provider = OpenAIProvider(openai_client=client)
+    # provider = OpenAIProvider(openai_client=client)
+    provider = infer_provider_class("openai")
+    provider = provider(openai_client=client)
 
     model = OpenAIChatModel(
-        "glm-5.3",
+        "deepseek-v4-flash",
         provider=provider,
     )
 
-    agent = Agent(model)
+    agent = Agent(
+        model,
+        capabilities=[Coder(), Advisor(model)],
+    )
 
-    result = agent.run_sync("Hello!")
+    result = agent.run_sync("Hello, what llm model an I currently running?")
     print(result.output)
 
 
