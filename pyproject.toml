@@ -2,4 +2,8 @@
 name = "opencodesandbox"
 version = "0.1.0"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "fastapi>=0.141.1",
+    "pydantic-ai>=2.44.0",
+    "uvicorn[standard]>=0.53.0",
+]
